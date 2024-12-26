@@ -1,0 +1,116 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Хранилище BaseModelFocusModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Basket">
+    <Key>
+      <PropertyRef Name="idBasket" />
+    </Key>
+    <Property Name="idBasket" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="idItem" Type="int" />
+    <Property Name="idStatus" Type="int" />
+  </EntityType>
+  <EntityType Name="Clients">
+    <Key>
+      <PropertyRef Name="idClient" />
+    </Key>
+    <Property Name="idClient" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="nameClient" Type="nvarchar" MaxLength="50" />
+    <Property Name="surnameClient" Type="nvarchar" MaxLength="50" />
+    <Property Name="patronymicClient" Type="nvarchar" MaxLength="50" />
+    <Property Name="phoneNumber" Type="bigint" />
+    <Property Name="address" Type="nvarchar(max)" />
+    <Property Name="time" Type="datetime" />
+    <Property Name="idBasket" Type="int" />
+  </EntityType>
+  <EntityType Name="Item">
+    <Key>
+      <PropertyRef Name="idItem" />
+    </Key>
+    <Property Name="idItem" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="barcode" Type="nvarchar(max)" />
+    <Property Name="name" Type="nvarchar" MaxLength="100" />
+    <Property Name="discription" Type="nvarchar(max)" />
+    <Property Name="price" Type="int" />
+    <Property Name="discount" Type="int" />
+    <Property Name="category" Type="nvarchar" MaxLength="20" />
+    <Property Name="place" Type="nvarchar" MaxLength="20" />
+    <Property Name="amountItem" Type="int" />
+  </EntityType>
+  <EntityType Name="Statuses">
+    <Key>
+      <PropertyRef Name="idStatus" />
+    </Key>
+    <Property Name="idStatus" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="status" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <Association Name="FK_Basket_Item">
+    <End Role="Item" Type="Self.Item" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Basket" Type="Self.Basket" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Item">
+        <PropertyRef Name="idItem" />
+      </Principal>
+      <Dependent Role="Basket">
+        <PropertyRef Name="idItem" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Basket_Statuses">
+    <End Role="Statuses" Type="Self.Statuses" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Basket" Type="Self.Basket" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Statuses">
+        <PropertyRef Name="idStatus" />
+      </Principal>
+      <Dependent Role="Basket">
+        <PropertyRef Name="idStatus" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Clients_Basket">
+    <End Role="Basket" Type="Self.Basket" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="Clients" Type="Self.Clients" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Basket">
+        <PropertyRef Name="idBasket" />
+      </Principal>
+      <Dependent Role="Clients">
+        <PropertyRef Name="idBasket" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="Хранилище BaseModelFocusModelContainer">
+    <EntitySet Name="Basket" EntityType="Self.Basket" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Clients" EntityType="Self.Clients" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Item" EntityType="Self.Item" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Statuses" EntityType="Self.Statuses" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Basket_Item" Association="Self.FK_Basket_Item">
+      <End Role="Item" EntitySet="Item" />
+      <End Role="Basket" EntitySet="Basket" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Basket_Statuses" Association="Self.FK_Basket_Statuses">
+      <End Role="Statuses" EntitySet="Statuses" />
+      <End Role="Basket" EntitySet="Basket" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Clients_Basket" Association="Self.FK_Clients_Basket">
+      <End Role="Basket" EntitySet="Basket" />
+      <End Role="Clients" EntitySet="Clients" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="BaseModelFocusModel4" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Basket">
+    <Key>
+      <PropertyRef Name="idBasket" />
+    </Key>
+    <Property Name="idBasket" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idItem" Type="Int32" />
+    <NavigationProperty Name="Item" Relationship="BaseModelFocusModel4.FK_Basket_Item" FromRole="Basket" ToRole="Item" />
+  </EntityType>
+  <EntityType Name="Item">
+    <Key>
+      <PropertyRef Name="idItem" />
+    </Key>
+    <Property Name="idItem" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="barcode" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="price" Type="Int32" />
+    <Property Name="discount" Type="Int32" />
+    <Property Name="manuf" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="type" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="place" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Name="amountItem" Type="Int32" />
+    <NavigationProperty Name="Basket" Relationship="BaseModelFocusModel4.FK_Basket_Item" FromRole="Item" ToRole="Basket" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityContainer Name="BaseModelFocusEntities4" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Basket" EntityType="Self.Basket" />
+    <EntitySet Name="Item" EntityType="Self.Item" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+    <AssociationSet Name="FK_Basket_Item" Association="BaseModelFocusModel4.FK_Basket_Item">
+      <End Role="Item" EntitySet="Item" />
+      <End Role="Basket" EntitySet="Basket" />
+    </AssociationSet>
+  </EntityContainer>
+  <Association Name="FK_Basket_Item">
+    <End Type="BaseModelFocusModel4.Item" Role="Item" Multiplicity="0..1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="BaseModelFocusModel4.Basket" Role="Basket" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Item">
+        <PropertyRef Name="idItem" />
+      </Principal>
+      <Dependent Role="Basket">
+        <PropertyRef Name="idItem" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
